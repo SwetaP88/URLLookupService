@@ -1,0 +1,28 @@
+{
+  "name": "urllookupservice",
+  "version": "1.0.0",
+  "description": "URLLookup Service",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app.js"
+  },
+  "dependencies": {
+    "express": "*",
+    "body-parser": "*",
+    "mongoose": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SwetaP88/URLLookupService.git"
+  },
+  "keywords": [
+    "test",
+    "url"
+  ],
+  "author": "Sweta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SwetaP88/URLLookupService/issues"
+  },
+  "homepage": "https://github.com/SwetaP88/URLLookupService#readme"
+}
