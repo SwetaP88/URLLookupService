@@ -7,9 +7,12 @@
     "test": "node app.js"
   },
   "dependencies": {
-    "express": "*",
+    "aa": "^0.1.40",
     "body-parser": "*",
-    "mongoose": "*"
+    "express": "*",
+    "mongoose": "*",
+    "request": "^2.83.0",
+    "rsvp": "^4.8.0"
   },
   "repository": {
     "type": "git",

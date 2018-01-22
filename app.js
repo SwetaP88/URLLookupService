@@ -30,3 +30,6 @@ App.mongoose = require('mongoose');
 
 module.exports = App;
 
+// load the urllookup view
+var view = require('.'+App.packagePath+'views/urllookup_view');
+view.getURLView();
