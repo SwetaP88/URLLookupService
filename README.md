@@ -24,5 +24,13 @@ Node, Express and MongoDB
 # Architecture of the project
 - Created basic MVC architecture under the /com/cox/basicurllookp/ package. Also created database, global, models, routes and views folder for the same
 
+# Added the URLLookup functionality
+- Wrote the code for this functionality in the urllokup_view.js, urllokup_model.js, urllokup_route.js
+- Also modified the Constants.js according to the constants needed for this functionality
+- In my code, urllokup_view calls the urllokup_route. urllokup_route routes according to the rest api given in the browser with the help of urllokup_model
+
+# TODO
+- Scalability and capacity of the system, asynchronous get request, update the database with new URL's
+
 
 
