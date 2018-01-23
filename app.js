@@ -23,8 +23,6 @@ Require the things (API's) needed in our project
 */
 var express = require('express');
 App.express = express();
-var bodyParser = require('body-parser');
-App.express.use(bodyParser.json());
 App.mongoose = require('mongoose');
 
 

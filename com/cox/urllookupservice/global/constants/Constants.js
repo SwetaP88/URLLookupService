@@ -16,9 +16,9 @@ var getConstants = function() {
 			db_type: 'mongodb',
 			db_name: 'urllookupservice',
 			db_connection: 'url_check',
-			defaultMessage: 'Go to the required URL',
-			secureMessage: 'Great! Looks like the URL you accessed is quite secure',
-			notSecureMessage: 'Not a secure URL. Try accessing some other URL',
+			defaultMessage: 'Go to the required URL.',
+			secureMessage: 'Great! Looks like the URL you are looking for is quite secure!',
+			notSecureMessage: 'Alert! Not a secure URL!! Try accessing some other URL.',
 			dbConnectionMsg: 'Connected to the database..'
 		}
 	};

@@ -8,9 +8,11 @@ Description: This file helps us to connect to the model and the database given.
 */
 
 var schemaSet = false;
+var model;
+
 var schemaSetCheck = function(conn,database) {
 	// url_check Schema for the database given
-	var url_check_Schema = database.Schema({
+	var url_check_Schema = new database.Schema({
 		name:{
 			type: String,
 			require: true
@@ -22,11 +24,12 @@ var schemaSetCheck = function(conn,database) {
 	});
 
 	// register the schema for the database
-	database.model(conn.db_name,url_check_Schema);
+	model = database.model(conn.db_name,url_check_Schema);
 	
 	schemaSet = true;
 };
 
+// function to get data from the database
 var getURLLookupModel = function(conn,database,check_url) {
 	if(!schemaSet) schemaSetCheck(conn,database);
 
@@ -50,5 +53,30 @@ var getURLLookupModel = function(conn,database,check_url) {
 	
 };
 
-module.exports.getURLLookupModel = getURLLookupModel;
+// function to post data from into the database
+var postURLLookupModel = function(req,conn,database) {
+	if(!schemaSet) schemaSetCheck(conn,database);
 
+	var req_data = {
+		name: req.name,
+	    type: req.type
+	};
+
+	var post_data = new model(req_data);
+
+	// save the data into our model
+	post_data.save( function(error, data){
+		if(error){
+			console.log('err');
+			database.connection.close();
+		}
+		else{
+			console.log('success');
+			database.connection.close();
+		}
+	});
+	database.connection.collection(conn.db_connection).insert({name:req.name, type:req.type});
+};
+
+module.exports.getURLLookupModel = getURLLookupModel;
+module.exports.postURLLookupModel = postURLLookupModel;
