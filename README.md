@@ -33,6 +33,9 @@ Node, Express and MongoDB
 - This feature should be available only for the admins
 - In this feature the admin can add new URL's into the system and mention whether it is secure or not. He can do this using any URL testing tool
 
+# Added the async-await functionality to the rest api calls
+- For the get and post request, I added the asynchronous calls features with the help of aysnc-await provided by express
+
 # Steps to get the output
 The screenshots of the output are added in the screenshots folder of the application.
 In our case, the BaseURL is - localhost:3000/urlinfo/1/

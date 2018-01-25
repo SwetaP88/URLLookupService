@@ -13,12 +13,12 @@ var bodyParser = require('body-parser');
 
 // New promise created, to connect to the database and get the result whether the 
 // URL is secure or not
-var open_db = function(conn){
+var open_db = function(conn,database){
 	return new Promise(function(resolve, reject) {
 		// Use connect method to connect to the Server
 		database.connect(conn.db_type+'://'+conn.hostName+'/'+conn.db_name, function(err, db) {
 			if(err) {
-				console.log('Error....', error);
+				console.log('Error....', err);
 				reject(err);
 			}else {
 				console.log(conn.dbConnectionMsg);
@@ -27,52 +27,88 @@ var open_db = function(conn){
 		});
 	});
 }
-		
-var getURLLookupRoute = function(web,conn,database) {
+	
+// get response connection to database logic
 
+	
+var getURLLookupRoute = function(web,conn,database) {
+	
+	const router = web.Router;
 	web.use(bodyParser.json());
 	
 	// default api get request
-	web.get('/', function(req, res){
-		res.send(conn.defaultMessage);
+	web.get('/', async function(req, res){
+		try {
+			await res.send(conn.defaultMessage);
+		} catch(error) {
+			res.send(error);
+		}
+	});
+	
+	// default GET /urlinfo/1/ request
+	web.get('/urlinfo/1/', async function(req, res){
+		try {
+			await res.send(conn.defaultMessage);
+		} catch(error) {
+			res.send(error);
+		}
 	});
 	
 	// api get request for the specified url given in the browser
-	web.get(conn.baseURL+'/:host_port/:path_query', function(req, res){
-	
-		// Check the last character of the query parameters
-		var query_params = req.params.path_query;
-		var url_last = query_params[query_params.length -1];
-		if(url_last == '/') query_params = query_params.slice(0, -1); 
+	web.get(conn.baseURL+'/:host_port/:path_query', async function(req, res){
 		
-		var check_url = req.params.host_port+'/'+query_params;
+		var getAPI = function getAPI() {
+			// Check the last character of the query parameters
+			var query_params = req.params.path_query;
+			var url_last = query_params[query_params.length -1];
+			if(url_last == '/') query_params = query_params.slice(0, -1); 
+
+			var check_url = req.params.host_port+'/'+query_params;
+
+			var db_connection = open_db(conn,database);
+
+			// New promise created, to connect to the database and get the result whether the 
+			// URL is secure or not
+			//var db_connection = open_db(conn);
+			db_connection.then(function(){ // get the data from the connection
+				return model.getURLLookupModel(conn,database,check_url);  
+			})
+			.then(function(result){ // Display the data on the browser
+				if(result == 'secure') return res.send(conn.secureMessage);
+				else return res.send(conn.notSecureMessage);
+			})
+			.catch(function(err){
+				return res.send(err);
+			})
+		}
 		
-		// New promise created, to connect to the database and get the result whether the 
-		// URL is secure or not
-		var db_connection = open_db(conn);
-		db_connection.then(function(db){ // get the data from the connection
-        	return model.getURLLookupModel(conn,database,check_url);  
-    	})
-    	.then(function(result){ // Display the data on the browser
-    		if(result == 'secure') res.send(conn.secureMessage);
-    		else res.send(conn.notSecureMessage);
-    	})
-    	.catch(function(err){
-        	res.send(err);
-    	})
-		
+		try {
+			await getAPI(); // asynchronous get requests handled here
+		} catch(error) {
+			res.send(error);
+		}
 	});
 
 	// api post request for the specified url given in the browser
-	web.post(conn.baseURL, function(req, res){
-		// New promise created, to connect to the database and 
-		// then post the request into the database
-		var db_connection = open_db(conn);
-		db_connection.then(function(db){ // get the data from the connection
-        	model.postURLLookupModel(req.body,conn,database); 
-    	})
-		
-		res.send('Data added successfully!!')
+	web.post(conn.baseURL, async function(req, res){
+	
+		var postAPI = function postAPI() {
+			// New promise created, to connect to the database and 
+			// then post the request into the database
+			var db_connection = open_db(conn,database);
+			db_connection.then(function(db){ // get the data from the connection
+				return model.postURLLookupModel(req.body,conn,database); 
+			}).catch(function(err){
+				return res.send(err);
+			})
+    	}
+    	
+    	try {
+			await postAPI(); // asynchronous posts requests handled here
+			res.send('Data added successfully!!');
+		} catch(error) {
+			res.send(error);
+		}
 	});
 	
 	// the request is listened on port given in the Constants.js file

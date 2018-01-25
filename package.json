@@ -9,7 +9,7 @@
   "dependencies": {
     "aa": "^0.1.40",
     "body-parser": "^1.18.2",
-    "express": "*",
+    "express": "^4.16.2",
     "mongoose": "*",
     "request": "^2.83.0",
     "rsvp": "^4.8.0"
